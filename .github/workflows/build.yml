@@ -12,16 +12,16 @@ jobs:
         node-version: [16.x]
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: browser-actions/setup-chrome@v1
+      - uses: actions/checkout@v2
+      - uses: browser-actions/setup-chrome@latest
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
 
       - name: Cache node modules
         id: cache-nodemodules
-        uses: actions/cache@v4
+        uses: actions/cache@v3
         env:
           cache-name: cache-node-modules
         with:
@@ -50,16 +50,16 @@ jobs:
       #    npm run test --watch=false --browsers=ChromeHeadless
       - name: Conventional Changelog Action
         id: changelog
-        uses: TriPSs/conventional-changelog-action@v5
+        uses: TriPSs/conventional-changelog-action@v3
         with:
-          github-token: ${{ secrets.WORKSHOP6_GITHUB_TOKEN }}
+          github-token: ${{ secrets. WORKSHOP6_NVD_API_KEY }}
           output-file: "false"
 
       - name: Create Release
         uses: actions/create-release@v1
         if: ${{ steps.changelog.outputs.skipped == 'false' }}
         env:
-          GITHUB_TOKEN: ${{ secrets.WORKSHOP6_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets. WORKSHOP6_NVD_API_KEY }}
         with:
           tag_name: ${{ steps.changelog.outputs.tag }}
           release_name: ${{ steps.changelog.outputs.tag }}
